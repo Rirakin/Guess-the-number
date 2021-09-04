@@ -45,24 +45,38 @@ session_start();
                 }
                 if($num > $_SESSION['los'])
                 {
-                    echo "Niestety wylosowana liczba jest mniejsza od twojej!<br>Podaj kolejną liczbę...<br>";
+                    echo "Unfortunately, the number drawn is smaller than yours!<br>Give another number...<br>";
                 }
                 else if($num < $_SESSION['los'])
                 {
-                    echo "Niestety wylosowana liczba jest większa od twojej!<br>Podaj kolejną liczbę...<br>";
+                    echo "Unfortunately, the number drawn is larger than yours!<br>Give another number...<br>";
                 }
                 else 
                 {
-                    echo "Brawo! Zgadłeś za ".  $_SESSION['i'] ." razem!<br>";
+                    if(isset($_COOKIE['Record']))
+                    {
+                        if($_COOKIE['Record'] > $_SESSION['i'])
+                        {
+                            setcookie("Record",  $_SESSION['i'], time() + (86400 * 30), "/");
+                        }
+                    }
+                    else 
+                    {
+                        setcookie("Record",  $_SESSION['i'], time() + (86400 * 30), "/");
+                    }
+                    echo "Congratulations! You guessed it ".  $_SESSION['i'] ." time!<br>";
 
                     session_destroy();
                 }
             }
             else 
             {
-                echo "Podaj pierwszą liczbę...<br>";
+                echo "Give the first number...<br>";
+            }
 
-
+            if(isset($_COOKIE['Record']))
+            {
+                echo "Your best score today: ". $_COOKIE['Record'];
             }
     
             ?>
